@@ -2,9 +2,23 @@
 #include<string>
 #include<Windows.h>
 #include<fstream>
+#include<stdio.h>
 #include<string.h>
 #include<conio.h>
+#include<string_view>
+#include<regex>
+#include<stdlib.h>
 using namespace std;
+
+// Email Vaildation Pattern
+bool Emailcheck(string email)
+{
+	const regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
+	return regex_match(email, pattern);
+}
+
+
+
 class University
 {
 protected:
@@ -19,7 +33,17 @@ public:
 };
 class Administration :public University {
 protected:
-	string timetable;
+	string name, id_no, course, address, email_id, timetable;
+	long long int contact_no;
+	
+public:
+	void menu();
+	void insert();
+	void display();
+	void modify();
+	void search();
+	void deleted();
+
 };
 class Professors :public University {
 private:
@@ -31,28 +55,52 @@ private:
 int main()
 {
 	University u;
-
+	Administration a;
+	Professors p;
 	system("color 0b");
 	int choice;
 	
-		system("cls");
+		
 		cout << "\t\t\t\t----->\tWelcome To Eclass System\t<-----" << endl;
 		cout << "\t\t-----------------------------------------------------------------" << endl;
 		cout << "\t\t|\t1: Login As a Student\t\t\t\t\t|" << endl;
-		cout << "\t\t|\t2: Login As a Faculty\t\t\t\t\t|" << endl;		
+		cout << "\t\t|\t2: Registration "<< endl;		
 		cout << "\t\t|\t3: Exit\t\t\t\t\t\t\t|" << endl;
 		cout << "\t\t-----------------------------------------------------------------" << endl;
 		cout << "\t\t\tEnter Your Choice: ";
 		cin >> choice;
+		system("cls");
 		switch (choice)
 		{
-			case 1:
+		case 1:
+		{
+			string admin, password;
+			cout << "\t\t\tUSERNAME: ";
+			cin >> admin;
+			cout << "\t\t\tPASSWORD: ";
+			cin >> password;
+			if (admin == "admin" && password == "admin")
 			{
-				u.LogIn();
-
-			}break;
-			case 2:
+				cout << "\t\t-----------------------------------------------------------------" << endl;
+              cout << "\t\t|\t1: Students' information\t\t\t\t|" << endl;//O'ktamjon, Abdusomad
+              cout << "\t\t|\t2: Staff's information\t\t\t\t\t|" << endl;//Sirojiddin
+              cout << "\t\t|\t3: Professors' information\t\t\t\t|" << endl;//Sirojiddin
+              cout << "\t\t|\t0: Exit\t\t\t\t\t\t\t|" << endl;
+              cout << "\t\t-----------------------------------------------------------------" << endl;
+			}
+			else
 			{
+				cout << "\t\t\t\t----->\tLOGIN ERROR!\t<-----" << endl;
+				main();
+			}
+		}break;
+		case 2:
+		{
+			
+		}break;
+			case 3:
+			{
+				
 				//Forgot();
 			}break;
 		default:
@@ -64,10 +112,7 @@ int main()
 }
 void University::LogIn() {
 	int count=0;
-	/*char pass[32];
 	
-	char a;
-	int i = 0;*/
 	system("cls");
 	cout << "\t\t\t\t----->\tEnter the Username and password\t<-----" << endl;
 	cout << "\t\t|\tUSERNAME: ";
@@ -75,30 +120,6 @@ void University::LogIn() {
 	cout << "\t\t|\tPASSWORD: ";
 	cin >> lpw;
 	
-	//for (i = 0;;)//infinite loop
-	//{
-	//	a = _getch();//stores char typed in a
-	//	if ((a >= 'a' && a <= 'z') || (a >= 'A' && a <= 'Z') || (a >= '0' && a <= '9'))
-	//		//check if a is numeric or alphabet
-	//	{
-	//		pass[i] = a;//stores a in pass
-	//		++i;
-	//		cout << "*";
-	//	}
-	//	if (a == '\b' && i >= 1)//if user typed backspace
-	//		//i should be greater than 1.
-	//	{
-	//		cout << "\b \b";//rub the character behind the cursor.
-	//		--i;
-	//	}
-	//	if (a == '\r')//if enter is pressed
-	//	{
-	//		pass[i] = '\0';//null means end of string.
-	//		break;//break the loop
-	//	}
-	//}
-
-
 	ifstream input("data.txt");
 
 	while (input >> luserid >> lpassword)
@@ -106,12 +127,12 @@ void University::LogIn() {
 		if (lid == luserid && lpw == lpassword)
 		{
 			count = 1;
-			system("cls");
+			
 		}
 	}
 	input.close();
 
-	if (count == 1)
+	if (count = 1)
 	{
 		cout << "\t\t\t\t----->\tYou've successfully logged in\t<-----" << endl;
 		cout << "\t\t\tUSERNAME: " << luserid << endl;
@@ -158,7 +179,7 @@ void University::Registration()
 	cout << "\t\t\tEnter Password: ";
 	cin >> rpw;
 	ofstream reg("data.txt", ios::app);
-	reg << ruserid << '  ' << rpw << endl;
+	reg << ruserid << " " << rpw << endl;
 	system("cls");
 	cout << "\t\t\t\t----->\tRegistrated Successfully!\t<-----" << endl;
 	
@@ -214,4 +235,57 @@ x1:
 	
 
 
+}
+void Administration::menu()
+{
+menustart:
+	int choice;
+	char x;
+	system("cls");
+	cout << "\t\t\t-----------------------------" << endl;
+	cout << "\t\t\t| STUDENT MANAGEMENT SYSTEM |" << endl;
+	cout << "\t\t\t-----------------------------" << endl;
+	cout << "\t\t\t 1. Enter New Record" << endl;
+	cout << "\t\t\t 2. Display Record" << endl;
+	cout << "\t\t\t 3. Modify Record" << endl;
+	cout << "\t\t\t 4. Search Record" << endl;
+	cout << "\t\t\t 5. Delete Record" << endl;
+	cout << "\t\t\t 6. Exit\n"
+		<< endl;
+
+	cout << "\t\t\t............................" << endl;
+	cout << "\t\t\tChoose Options:[1/2/3/4/5/6]" << endl;
+	cout << "\t\t\t............................" << endl;
+	cout << " Enter Your Choose: ";
+	cin >> choice;
+	switch (choice)
+	{
+	case 1:
+		do
+		{
+			insert();
+			cout << "\n\n\t\t\t Add Another Student Record (Y, N) : ";
+			cin >> x;
+		} while (x == 'y' || x == 'Y');
+		break;
+	case 2:
+		display();
+		break;
+	case 3:
+		modify();
+		break;
+	case 4:
+		search();
+		break;
+	case 5:
+		deleted();
+		break;
+	case 6:
+		cout << "\n\t\t\t Program Is Exit";
+		exit(0);
+	default:
+		cout << "\n\n\t\t\t Invalid Choice... Please Try Again...";
+	}
+	_getch();
+	goto menustart;
 }
